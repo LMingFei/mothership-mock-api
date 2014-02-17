@@ -26,7 +26,7 @@ router.use(express.methodOverride());
 var route = require('./route');
 route.init(router);
 
-router.use(express.static(path.resolve(__dirname, 'client')));
+router.use(express.static(path.resolve(__dirname, 'client/')));
 var messages = [];
 var sockets = [];
 

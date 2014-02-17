@@ -1,0 +1,12 @@
+.no-footer
+  %header
+    阳光书屋
+    .header-right
+      %a.btn-style.btn-4
+        创建教室
+  .wrapper
+    %ul.list-style-2
+      %center
+        %li(ng-repeat="classroom in classroom_list")
+          %a(ng-tap="goto_detail_classroom({{classroom.name}})")
+            {{classroom.name}}

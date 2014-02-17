@@ -45,7 +45,7 @@ var driveStorage = {"media": {}};
             "url": "/app/102",
             "manifest": {}
         };
-        rooms.push(app);
+        apps.push(app);
         driveStorage[app.id] = {};
         console.log('create app,%s', JSON.stringify(app));
     });
@@ -57,7 +57,8 @@ var driveStorage = {"media": {}};
             "school_id": "无锡",
             "school_name": "无锡",
             "members": [],
-            "apps": []
+            "apps": [],
+            "admin_ids":[me],
         };
         _.each(_.sample(users, _.random(15)), function (user) {
             room.members.push(user);
@@ -167,6 +168,11 @@ exports.init = function (router) {
         }
         res.send(req.room);
     });
+    router.put("/1/rooms/:roomId/admin/:userId",function (req,res){
+	req.room.admin_ids.push(req.user);
+	req.user.rooms.push(req.room.id);
+	res.send(req.room);
+    });
 
     /**
      * APP
@@ -183,11 +189,11 @@ exports.init = function (router) {
     router.del("/1/apps/:appId", function (req, res) {
         res.send(req.app);
     });
-    router.put("/1/rooms/roomId/apps/:appId", function (req, res) {
+    router.put("/1/rooms/:roomId/apps/:appId", function (req, res) {
         req.room.apps.push(req.app);
         res.send(req.room);
     });
-    router.del("/1/rooms/roomId/apps/:appId", function (req, res) {
+    router.del("/1/rooms/:roomId/apps/:appId", function (req, res) {
         var foundIndex = -1;
         _.each(req.room.apps, function (app, index) {
             if (app.id == req.app.id) {
