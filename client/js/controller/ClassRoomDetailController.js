@@ -4,16 +4,9 @@
 function ClassRoomDetail($scope,$routeParams,$http){
     var room_id = $routeParams.room_id;
 
-    $scope.member_remove_flag=false;
+    update_data();
 
-    $scope.room = Room.get_One(room_id)
-
-    $scope.apps = $scope.room.apps;
-
-    $scope.members=$scope.room.members;
-
-    $scope.me = User.get_me();
-
+    judge_admin_flag()
 
     $scope.add_Apps=function(){
         var apps=[];
@@ -23,8 +16,9 @@ function ClassRoomDetail($scope,$routeParams,$http){
             }
         })
         Room.add_Apps(room_id,apps,$http);
+        $scope.hide_add_div()
+        update_data();
     }
-
 
     $scope.add_Members=function(){
         var members=[];
@@ -34,65 +28,59 @@ function ClassRoomDetail($scope,$routeParams,$http){
             }
         })
         Room.add_Members(room_id,members,$http);
-        $scope.hide_add_div;
+        $scope.hide_add_div()
+        update_data();
     }
-
 
     $scope.remove_App = function(app_id){
         Room.remove_App(room_id,app_id,$http);
+        $scope.detail_div_flag = false;
+        update_data();
     }
 
     $scope.remove_Member = function(user_id){
         Room.remove_Member(room_id,user_id,$http)
-    }
-
-    $scope.show_remove_div =function(user){
-        set_admin_flag();
-        $scope.user_selected=user;
-        $scope.member_remove_flag=true;
-    }
-
-    $scope.hide_remove_div = function(){
-        $scope.user_selected=null;
-        $scope.member_remove_flag = false;
-    }
-
-    $scope.show_add_div = function(data){
-        $scope.member_add_flag=true;
-        $scope.all_users=null;
-        $scope.all_apps=null;
-        data=='add_members'?User.get_All($http,get_users):App.get_All($http,get_apps)
-    }
-
-    function get_users(data){
-        $scope.btn_put_flag=false
-        $scope.all_users=data;
-    }
-    function get_apps(data){
-        $scope.btn_put_flag=true
-        $scope.all_apps=data;
-    }
-    $scope.hide_add_div = function(){
-        $scope.all_users=null;
-        $scope.all_aps=null;
-        $scope.member_add_flag=false;
-    }
-
-    $scope.hide_app_detail = function(){
-        $scope.app_selected=null
-        $scope.app_detail_flg=false
-    }
-
-    $scope.show_detail_app = function(app){
-        $scope.app_selected=app;
-        $scope.app_detail_flg=true;
+        $scope.detail_div_flag = false;
+        update_data();
     }
 
     $scope.set_admin = function(user_id){
         Room.set_Admin(room_id,user_id,$http);
     }
 
-    function set_admin_flag(){
+
+
+    $scope.show_detail_div =function(data,flag){
+        $scope.hide_add_div();
+        $scope.user_selected=null;
+        $scope.app_selected=null;
+        flag=='user'?$scope.user_selected = data: $scope.app_selected = data;
+        $scope.btn_remove_flag = flag=='user'? false : true;
+        $scope.detail_div_flag = true;
+
+    }
+
+    $scope.hide_remove_div = function(){
+        $scope.detail_div_flag = false;
+    }
+
+    $scope.show_add_div = function(data){
+        $scope.hide_remove_div();
+        $scope.member_add_flag=true;
+        $scope.all_users=null;
+        $scope.all_apps=null;
+        data=='add_members'?$scope.all_users = Room.get_users_else($scope.room.members):$scope.all_apps = Room.get_apps_else($scope.room.apps);
+        $scope.btn_put_flag = data=='add_members'? false : true;
+    }
+
+    $scope.hide_add_div = function(){
+        $scope.all_users=null;
+        $scope.all_aps=null;
+        $scope.member_add_flag=false;
+    }
+
+
+    function judge_admin_flag(){
         $scope.admin_flag=false;
         _.find($scope.room.admin_ids,function(admin){
             if(admin.id==$scope.me.id){
@@ -101,4 +89,13 @@ function ClassRoomDetail($scope,$routeParams,$http){
         })
     }
 
+    function update_data(){
+        $scope.room = Room.get_One(room_id)
+
+        $scope.apps = $scope.room.apps;
+
+        $scope.members=$scope.room.members;
+
+        $scope.me = User.get_me();
+    }
 }

@@ -4,7 +4,7 @@
 function App(id,type,full_name,package_name,version_code,url,home,manifest){
     //...
 }
-App.get_All = function($http,callback,$scope){
+App.get_All = function(){
     var temp;
     $.ajax({
         url:"/1/apps",

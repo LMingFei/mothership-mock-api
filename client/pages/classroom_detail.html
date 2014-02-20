@@ -1,47 +1,60 @@
 <header>
-  {{current_classroom.name}}
+  {{room.full_name}}
   <div class='header-right'>
     <a class='btn-style btn-4' ng-tap='show_add_div("add_apps")'>
       添加应用
     </a>
   </div>
 </header>
+
+
 <div class='wrapper'>
-  <h3>
+  <h3 style="margin-left: 20px">
     My App
-    <ul class='list-style-2'>
+    <ul class='list-style-2' style=";margin-top: 20px">
         <div class="app_back" ng-repeat='app in apps'>
-            <a ng-tap='show_detail_app(app)'>
+            <a ng-tap='show_detail_div(app,"app")'>
                 <h3>
                     {{app.full_name}}
                 </h3>
             </a>
         </div>
 
-    </ul>>
+    </ul>
   </h3>
-  <div class="div_remove"  ng-show='member_remove_flag'>
-      {{user_selected.full_name}}
-      <button ng-tap='remove_Member(user_selected.id)'>
-          从本班删除
-      </button>
-      <button ng-tap='set_admin(user_selected.id)' ng-show="admin_flag">
-          设为管理员
-      </button>
-      <button class="btn_close" ng-tap="hide_remove_div()">
+
+
+  <div class="div_remove" style="position: absolute;left: 40%"  ng-show='detail_div_flag' ng-switch="btn_remove_flag">
+      <h3 style="position: relative; left:2%" >
+          {{user_selected.full_name}}
+          {{app_selected.full_name}}
+      </h3>
+      <button class="btn_close" style="right:0px;position:absolute;" ng-tap="hide_remove_div()">
           X
       </button>
+      <div ng-switch-when='false' >
+          <button ng-tap='remove_Member(user_selected.id)' >
+              从本班删除
+          </button>
+          <button ng-tap='set_admin(user_selected.id)' ng-show="admin_flag">
+              设为管理员
+          </button>
+      </div>
+
+      <div ng-switch-when='true'>
+          {{app_selected.full_name}}      {{app_selected.full_name}}
+          <button ng-tap='remove_App(app_selected.id)'>
+              从本班删除
+          </button>
+          <a class="btn-2" href="{{app_selected.url}}">
+              进入应用
+          </a>
+      </div>
   </div>
-  <div class="div_remove"  ng-show='app_detail_flg'>
-      {{app_selected.full_name}}
-      <button ng-tap='remove_App(app_selected.id)'>
-          从本班删除
-      </button>
-      <button class="btn_close" ng-tap="hide_app_detail()">
-          X
-      </button>
-      <a class="btn-2" href="{{app_selected.url}}">进入应用</a>
-  </div>
+
+
+
+
   <div class="div_add"  ng-show='member_add_flag'>
       <ul id="all_users" >
           <div ng-repeat="user in all_users">
@@ -75,7 +88,7 @@
       </a>
     </h3>
   </ul>
-  <div   style="float: left;cursor:pointer;margin-right: 20px;" ng-repeat='member in members' id='member.id' ng-tap="show_remove_div(member)">
+  <div   style="float: left;cursor:pointer;margin-right: 20px;" ng-repeat='member in members' id='member.id' ng-tap="show_detail_div(member,'user')">
     <img src="/img/images.jpg" style="width:50px;height:50px">
   </div>
 </footer>

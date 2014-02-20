@@ -44,7 +44,7 @@ Room.get_my_room=function(my_id){
 Room.get_One=function(room_id){
     var temp;
     $.ajax({
-        url:"/1/rooms"+room_id,
+        url:"/1/rooms/"+room_id,
         async:false,
         type:'get',
         success:function(data){
@@ -96,7 +96,22 @@ Room.remove_Member = function(room_id,user_id,$http){
 Room.set_Admin = function(room_id,user_id,$http){
     $http.put("/1/rooms/"+room_id+"/admin/"+user_id)
         .success(function(response){
+            alert("设置管理员成功");
         }).error(function(err){
             alert(err)
         })
+}
+
+Room.get_apps_else = function(my_apps){
+    var all_apps=App.get_All();
+    return _.filter(all_apps,function(app){
+        return !_.contains(_.pluck(my_apps,'id'),app.id);
+    })
+}
+
+Room.get_users_else = function(my_user){
+    var all_users = User.get_All();
+    return _.filter(all_users,function(user){
+        return !_.contains(_.pluck(my_user,'id'),user.id);
+    })
 }
