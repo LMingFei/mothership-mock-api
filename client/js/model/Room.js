@@ -9,18 +9,24 @@ function Room(id,full_name,school_id,school_name){
     this.members=[];
     this.apps=[];
 }
-Room.get_All=function($http,callback,$scope){
-    $http.get("/1/rooms")
-        .success(function(response){
-            if(response){
-                callback($scope,response)
-            }
-        }).error(function(err){
-            alert(err)
-        });
+Room.get_All=function(){
+    var temp;
+    $.ajax({
+        url:"/1/rooms",
+        async:false,
+        type:'get',
+        success:function(data){
+            temp = data;
+        },
+        error:function(err){
+            alert(err);
+        }
+    })
+    return temp;
 }
 
-Room.get_my_room=function(all_rooms,my_id){
+Room.get_my_room=function(my_id){
+    var all_rooms=Room.get_All();
     var my_rooms=[];
     _.each(all_rooms,function(room){
         if(room.members){
@@ -31,18 +37,24 @@ Room.get_my_room=function(all_rooms,my_id){
             })
         }
     })
+
     return my_rooms;
 }
 
-Room.get_One=function(room_id,$http,callback,$scope){
-    $http.get("/1/rooms/"+room_id)
-        .success(function(response){
-            if(response){
-                callback($scope,response)
-            }
-        }).error(function(err){
-            alert(err)
-        });
+Room.get_One=function(room_id){
+    var temp;
+    $.ajax({
+        url:"/1/rooms"+room_id,
+        async:false,
+        type:'get',
+        success:function(data){
+            temp = data;
+        },
+        error:function(err){
+            alert(err);
+        }
+    })
+    return temp;
 }
 
 Room.add_Apps = function(room_id,apps_ids,$http){

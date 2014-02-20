@@ -9,35 +9,50 @@ function User(id,full_name,email,rooms){
 }
 
 
-User.get_me = function($http,callback,$scope){
-    $http.get("/1/me")
-        .success(function(response){
-            if(response){
-                callback($scope,response)
-            }
-        }).error(function(err){
-            alert(err)
-        });
-}
-
-User.get_All = function($http,callback,$scope){
-    $http.get("/1/users")
-        .success(function(response){
-            if(response){
-                callback($scope,response)
-            }
-        }).error(function(err){
-            alert(err)
-        });
-}
-
-User.get_One = function(user_id,$http,callback,$scope){
-    $http.get("/1/users/"+user_id)
-        .success(function(response){
-            if(response){
-                callback($scope,response)
-            }
-        }).error(function(err){
+User.get_me = function(){
+    var temp;
+    $.ajax({
+        url:"/1/me",
+        async:false,
+        type:'get',
+        success:function(data){
+            temp = data;
+        },
+        error:function(err){
             alert(err);
-        });
+        }
+    })
+    return temp;
+}
+
+User.get_All = function(){
+    var temp;
+    $.ajax({
+        url:"/1/users",
+        async:false,
+        type:'get',
+        success:function(data){
+            temp = data;
+        },
+        error:function(err){
+            alert(err);
+        }
+    })
+    return temp;
+}
+
+User.get_One = function(user_id){
+    var temp;
+    $.ajax({
+        url:"/1/users"+user_id,
+        async:false,
+        type:'get',
+        success:function(data){
+            temp = data;
+        },
+        error:function(err){
+            alert(err);
+        }
+    })
+    return temp;
 }

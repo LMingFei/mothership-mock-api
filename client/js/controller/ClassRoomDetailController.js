@@ -3,12 +3,19 @@
  */
 function ClassRoomDetail($scope,$routeParams,$http){
     $scope.member_remove_flag=false;
-
     var room_id=$routeParams.room_id;
-
     Room.get_One(room_id,$http,get_room)
+    function get_room(data){
+        $scope.room=data;
+        $scope.apps=$scope.room.apps;
+        $scope.members=$scope.room.members;
+    }
+
 
     User.get_me($http,get_user);
+    function get_user(data){
+        $scope.me=data;
+    }
 
     $scope.add_Apps=function(apps_ids){
         var apps=[];
@@ -19,6 +26,7 @@ function ClassRoomDetail($scope,$routeParams,$http){
         })
         Room.add_Apps(room_id,apps,$http);
     }
+
 
     $scope.add_Members=function(){
         var members=[];
@@ -31,6 +39,7 @@ function ClassRoomDetail($scope,$routeParams,$http){
         Room.add_Members(room_id,members,$http);
         $scope.hide_add_div;
     }
+
 
     $scope.remove_App = function(app_id){
         Room.remove_App(room_id,app_id,$http);
@@ -59,17 +68,23 @@ function ClassRoomDetail($scope,$routeParams,$http){
         data=='add_members'?User.get_All($http,get_users):App.get_All($http,get_apps)
     }
 
+    function get_users(data){
+        $scope.btn_put_flag=false
+        $scope.all_users=data;
+    }
+    function get_apps(data){
+        $scope.btn_put_flag=true
+        $scope.all_apps=data;
+    }
     $scope.hide_add_div = function(){
         $scope.all_users=null;
         $scope.all_aps=null;
         $scope.member_add_flag=false;
     }
-
     $scope.hide_app_detail = function(){
         $scope.app_selected=null
         $scope.app_detail_flg=false
     }
-
     $scope.show_detail_app = function(app){
         $scope.app_selected=app;
         $scope.app_detail_flg=true;
