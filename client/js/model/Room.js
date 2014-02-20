@@ -9,11 +9,11 @@ function Room(id,full_name,school_id,school_name){
     this.members=[];
     this.apps=[];
 }
-Room.get_All=function($http,callback){
+Room.get_All=function($http,callback,$scope){
     $http.get("/1/rooms")
         .success(function(response){
             if(response){
-                callback(response)
+                callback($scope,response)
             }
         }).error(function(err){
             alert(err)
@@ -31,15 +31,14 @@ Room.get_my_room=function(all_rooms,my_id){
             })
         }
     })
-
     return my_rooms;
 }
 
-Room.get_One=function(room_id,$http,callback){
+Room.get_One=function(room_id,$http,callback,$scope){
     $http.get("/1/rooms/"+room_id)
         .success(function(response){
             if(response){
-                callback(response)
+                callback($scope,response)
             }
         }).error(function(err){
             alert(err)

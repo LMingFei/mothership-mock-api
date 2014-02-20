@@ -9,33 +9,33 @@ function User(id,full_name,email,rooms){
 }
 
 
-User.get_me = function($http,callback){
+User.get_me = function($http,callback,$scope){
     $http.get("/1/me")
         .success(function(response){
             if(response){
-                callback(response)
+                callback($scope,response)
             }
         }).error(function(err){
             alert(err)
         });
 }
 
-User.get_All = function($http,callback){
+User.get_All = function($http,callback,$scope){
     $http.get("/1/users")
         .success(function(response){
             if(response){
-                callback(response)
+                callback($scope,response)
             }
         }).error(function(err){
             alert(err)
         });
 }
 
-User.get_One = function(user_id,$http,callback){
+User.get_One = function(user_id,$http,callback,$scope){
     $http.get("/1/users/"+user_id)
         .success(function(response){
             if(response){
-                callback(response)
+                callback($scope,response)
             }
         }).error(function(err){
             alert(err);
