@@ -1,10 +1,10 @@
 <header>
     <select ng-model="selected_room" ng-change="change()" ng-options="room.full_name for room in my_rooms" ng-change="update_data()">
-        <!--<option value="">--请选择--</option>-->
+        <option value="">--请选择--</option>
     </select>
 
   <div class='header-right'>
-    <a class='btn-style btn-4' ng-tap='show_add_div("add_apps")'>
+    <a class='btn-style btn-4' ng-tap='show_add_div("add_apps")' ng-show="admin_flag">
       添加应用
     </a>
   </div>
@@ -86,7 +86,7 @@
   <ul class='footer-nav' >
     <h3>
       同学们
-      <a class='btn-style btn-4' style="position: absolute;right:20px" ng-tap="show_add_div('add_members')">
+      <a class='btn-style btn-4' style="position: absolute;right:20px" ng-tap="show_add_div('add_members')" ng-show="admin_flag">
         添加学生
       </a>
     </h3>

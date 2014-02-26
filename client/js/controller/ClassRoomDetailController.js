@@ -1,10 +1,9 @@
 /**
  * Created by mingfei on 14-2-12.
  */
-function ClassRoomDetail($scope,$routeParams,$http){
-    var room_id = $routeParams.room_id;
+function ClassRoomDetail($scope,$http){
 
-    update_data();
+    init_data();
 
     judge_admin_flag()
 
@@ -15,9 +14,9 @@ function ClassRoomDetail($scope,$routeParams,$http){
                 apps.push(this.name);
             }
         })
-        Room.add_Apps(room_id,apps,$http);
+        Room.add_Apps($scope.room.id,apps,$http);
         $scope.hide_add_div()
-        update_data();
+        $scope.change();
     }
 
     $scope.add_Members=function(){
@@ -27,21 +26,21 @@ function ClassRoomDetail($scope,$routeParams,$http){
             members.push(this.name);
             }
         })
-        Room.add_Members(room_id,members,$http);
+        Room.add_Members($scope.room.id,members,$http);
         $scope.hide_add_div()
-        update_data();
+        $scope.change();
     }
 
     $scope.remove_App = function(app_id){
-        Room.remove_App(room_id,app_id,$http);
+        Room.remove_App($scope.room.id,app_id,$http);
         $scope.detail_div_flag = false;
-        update_data();
+        $scope.change();
     }
 
     $scope.remove_Member = function(user_id){
-        Room.remove_Member(room_id,user_id,$http)
+        Room.remove_Member($scope.room.id,user_id,$http)
         $scope.detail_div_flag = false;
-        update_data();
+        $scope.change();
     }
 
     $scope.set_admin = function(user_id){
@@ -77,8 +76,21 @@ function ClassRoomDetail($scope,$routeParams,$http){
         $scope.member_add_flag=false;
     }
 
+    $scope.change = function(){
+        $scope.room = $scope.selected_room == undefined?new Room(null,null,null,null): Room.get_One($scope.selected_room.id)
+
+        $scope.apps = $scope.room.apps;
+
+        $scope.members=$scope.room.members;
+
+        judge_admin_flag();
+    }
+
     function judge_admin_flag(){
+        console.log(13);
+
         $scope.admin_flag=false;
+
         _.find($scope.room.admin_ids,function(admin){
             if(admin.id==$scope.me.id){
                 $scope.admin_flag=true
@@ -86,24 +98,19 @@ function ClassRoomDetail($scope,$routeParams,$http){
         })
     }
 
-    function update_data(){
-
-        console.log(123);
-
-        var to_room_id = $scope.selected_room == undefined?room_id: $scope.selected_room.id;
-
-        $scope.room = Room.get_One(to_room_id)
-
-        $scope.apps = $scope.room.apps;
-
-        $scope.members=$scope.room.members;
+    function init_data(){
 
         $scope.me = User.get_me();
 
         $scope.my_rooms = Room.get_my_room($scope.me.id)
+
+        $scope.room = new Room(null,null,null,null);
+
+        $scope.apps = $scope.room.apps;
+
+        $scope.members=$scope.room.members;
     }
 
-    $scope.change = update_data
-//    $scope.$watch('selected_room',update_data(),true)
+
 
 }

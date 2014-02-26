@@ -2,7 +2,7 @@ myModule.config(function($routeProvider) {
     $routeProvider.when("/classroom_list", {
             templateUrl: "pages/classroom_list.html",
             controller: ClassRoomListController
-        }).when("/classroom_detail/:room_id", {
+        }).when("/classroom_detail/", {
             templateUrl: "pages/classroom_detail.html",
             controller: ClassRoomDetail
         }).otherwise({
