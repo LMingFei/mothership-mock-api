@@ -1,12 +1,9 @@
 myModule.config(function($routeProvider) {
-    $routeProvider.when("/classroom_list", {
-            templateUrl: "pages/classroom_list.html",
-            controller: ClassRoomListController
-        }).when("/classroom_detail/", {
+    $routeProvider.when("/classroom_detail/", {
             templateUrl: "pages/classroom_detail.html",
             controller: ClassRoomDetail
         }).otherwise({
-        redirectTo: "/classroom_list"
+        redirectTo: "/classroom_detail"
     });
 
 
