@@ -69,7 +69,7 @@ Room.add_Apps = function(room_id,apps_ids,$http){
 
 Room.remove_App = function(room_id,app_id,$http){
     $http.delete("/1/rooms/"+room_id+"/apps/"+app_id)
-        .success(function(response){
+        .success(function(){
         }).error(function(err){
             alert(err)
         })

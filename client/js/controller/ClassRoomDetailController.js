@@ -48,8 +48,6 @@ function ClassRoomDetail($scope,$routeParams,$http){
         Room.set_Admin(room_id,user_id,$http);
     }
 
-
-
     $scope.show_detail_div =function(data,flag){
         $scope.hide_add_div();
         $scope.user_selected=null;
@@ -79,7 +77,6 @@ function ClassRoomDetail($scope,$routeParams,$http){
         $scope.member_add_flag=false;
     }
 
-
     function judge_admin_flag(){
         $scope.admin_flag=false;
         _.find($scope.room.admin_ids,function(admin){
@@ -90,12 +87,23 @@ function ClassRoomDetail($scope,$routeParams,$http){
     }
 
     function update_data(){
-        $scope.room = Room.get_One(room_id)
+
+        console.log(123);
+
+        var to_room_id = $scope.selected_room == undefined?room_id: $scope.selected_room.id;
+
+        $scope.room = Room.get_One(to_room_id)
 
         $scope.apps = $scope.room.apps;
 
         $scope.members=$scope.room.members;
 
         $scope.me = User.get_me();
+
+        $scope.my_rooms = Room.get_my_room($scope.me.id)
     }
+
+    $scope.change = update_data
+//    $scope.$watch('selected_room',update_data(),true)
+
 }

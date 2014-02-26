@@ -56,9 +56,9 @@ var driveStorage = {"media": {}};
             "full_name": "高一" + index + "班",
             "school_id": "无锡",
             "school_name": "无锡",
-            "members": [],
+            "members": [me],
             "apps": [],
-            "admin_ids":[me],
+            "admin_ids":[me]
         };
         _.each(_.sample(users, _.random(15)), function (user) {
             room.members.push(user);

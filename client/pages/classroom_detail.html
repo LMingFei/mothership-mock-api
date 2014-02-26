@@ -1,5 +1,8 @@
 <header>
-  {{room.full_name}}
+    <select ng-model="selected_room" ng-change="change()" ng-options="room.full_name for room in my_rooms" ng-change="update_data()">
+        <!--<option value="">--请选择--</option>-->
+    </select>
+
   <div class='header-right'>
     <a class='btn-style btn-4' ng-tap='show_add_div("add_apps")'>
       添加应用
